@@ -1,5 +1,12 @@
-## File Integrity Check
+# File Integrity Check
 
+## Requirements
+- First, make sure you have OpenSSL installed. On Ubuntu, you can install it with:
+```bash
+ sudo apt-get install libssl-dev
+```
+
+## Task description
 **Objective**: Create a tool that calculates and verifies checksums or cryptographic hashes to verify file integrity.
 
 **Functional Requirements:**
