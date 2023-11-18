@@ -5,12 +5,16 @@
 #include <iostream>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
-#include <iomanip>
+#include <iomanip> // for input/output manipulation (toHex)
+#include <fstream>
+#include <utility> // for std::move()
 
 class AbstractHasher {
 protected:
     std::string binary_hash;
     std::string hash;
+    std::string filename;
+    std::ifstream file;
 
     void toHex() {
         // Transform binary hash string into hexadecimal
@@ -28,8 +32,34 @@ protected:
     }
 
 public:
+    explicit AbstractHasher(std::string filename) : filename(std::move(filename)),
+                                                    file(this->filename, std::ios::binary) {
+        if (!file) {
+            throw std::runtime_error("Cannot open file");
+        }
+    };
+
+//    Forbid copy
+    AbstractHasher(const AbstractHasher &) = delete;
+
+    AbstractHasher &operator=(const AbstractHasher &) = delete;
+
+//    Forbid move
+    AbstractHasher(AbstractHasher &&) = delete;
+
+    AbstractHasher &operator=(AbstractHasher &&) = delete;
+
     virtual std::string getHash() = 0;
+
     virtual ~AbstractHasher() = default;
+
+    std::string get_hash() {
+        return hash;
+    }
+
+    std::string get_binary_hash() {
+        return binary_hash;
+    }
 
 };
 
