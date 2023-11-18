@@ -69,6 +69,7 @@ protected:
         unsigned char hash_array[EVP_MAX_MD_SIZE];
         unsigned int lengthOfHash = 0;
         if (EVP_DigestFinal_ex(digest_context, hash_array, &lengthOfHash) != 1) {
+//            Free memory
             EVP_MD_CTX_free(digest_context);
             throw std::runtime_error("Failed to finalize digest");
         }
@@ -133,6 +134,11 @@ public:
         std::cout << getHash() << std::endl;
     }
 
+    bool validate(const std::string& input) {
+        checkHash();
+        return (hash == input);
+    }
+
 };
 
 class HasherSHA256 : public AbstractHasher {
@@ -150,5 +156,22 @@ public:
 
     HasherSHA256() = delete;
 };
+
+class HasherMD5 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_md5(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to initialize digest context");
+        }
+    }
+
+
+public:
+    using AbstractHasher::AbstractHasher;
+
+    HasherMD5() = delete;
+};
+
 
 #endif //CHECKSUMS_HASHER_H
