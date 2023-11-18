@@ -2,8 +2,8 @@
 #include "Hasher.h"
 
 int main() {
-    HasherMD5 hasher("/home/artur/dev/checksums/textfile");
-    hasher.getHash();
+    HasherSHA256 hasher("/home/artur/dev/checksums/textfile");
     std::cout << "Hello, checksums!" << std::endl;
+    std::cout << hasher.getHash() << std::endl;
     return 0;
 }
