@@ -71,18 +71,29 @@ public:
 
     virtual ~AbstractHasher() = default;
 
-    std::string getHash() {
-        if (hash.empty()) {
+    void checkHash() {
+        if (binary_hash.empty()) {
             calculateHash();
         }
+    }
+
+    std::string getHash() {
+        checkHash();
         return hash;
     }
 
     std::string get_binary_hash() {
-        if (binary_hash.empty()) {
-            calculateHash();
-        }
+        checkHash();
         return binary_hash;
+    }
+
+    void showBinaryHash() {
+        checkHash();
+        for (unsigned char c: binary_hash) {
+            std::bitset<8> bits(c);
+            std::cout << bits << ' ';
+        }
+        std::cout << std::endl;
     }
 
 };
