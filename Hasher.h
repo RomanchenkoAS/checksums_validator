@@ -1,5 +1,5 @@
-#ifndef CHECKSUMS_CHECKSUMCALCULATOR_H
-#define CHECKSUMS_CHECKSUMCALCULATOR_H
+#ifndef CHECKSUMS_HASHER_H
+#define CHECKSUMS_HASHER_H
 
 #include <string>
 #include <iostream>
@@ -71,4 +71,4 @@ public:
 
 };
 
-#endif //CHECKSUMS_CHECKSUMCALCULATOR_H
+#endif //CHECKSUMS_HASHER_H

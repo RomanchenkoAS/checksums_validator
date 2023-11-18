@@ -1,3 +1,3 @@
-#include "ChecksumCalculator.h"
+#include "Hasher.h"
 
 // Functions implementation go here
