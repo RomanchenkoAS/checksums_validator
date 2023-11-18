@@ -10,6 +10,7 @@
 #include <iomanip> // for input/output manipulation (toHex)
 #include <fstream>
 #include <utility> // for std::move()
+#include <algorithm> // for std::transform()
 
 #include <bitset> // for debugging
 
@@ -21,24 +22,28 @@ protected:
     std::ifstream file;
 
     void toHex() {
+        // Transform binary hash string into hexadecimal
+#ifdef DEBUG
         std::cout << "Binary string:" << std::endl;
         for (unsigned char c: binary_hash) {
             std::bitset<8> bits(c);
             std::cout << bits << ' ';
         }
         std::cout << std::endl;
-        // Transform binary hash string into hexadecimal
+#endif
         std::stringstream ss;
         for (char byte: binary_hash) {
             /*
-             * static_cast<int>(byte) - transform a byte into an integer 0..255
+             * static_cast<unsigned char> - transform a signed char to a regular unsigned one
+             * static_cast<int>(...) - transform a byte into an integer 0..255
              * std::setw(2) - set length of a hex digit to 2 slots
              * std::setfill('0') - fill slots with 0 if empty up to 2 slots
              * std::hex - interpret input as a hexadecimal string
              */
-            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
+            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
         }
         hash = ss.str();
+        std::transform(hash.begin(), hash.end(), hash.begin(), ::toupper);
     }
 
     virtual void calculateHash() = 0;
