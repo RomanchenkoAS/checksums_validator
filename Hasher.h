@@ -31,7 +31,11 @@ protected:
         hash = ss.str();
     }
 
+    virtual std::string calculateHash() = 0;
+
 public:
+    AbstractHasher() = delete;
+
     explicit AbstractHasher(std::string filename) : filename(std::move(filename)),
                                                     file(this->filename, std::ios::binary) {
         if (!file) {
@@ -49,11 +53,13 @@ public:
 
     AbstractHasher &operator=(AbstractHasher &&) = delete;
 
-    virtual std::string getHash() = 0;
 
     virtual ~AbstractHasher() = default;
 
-    std::string get_hash() {
+    std::string getHash() {
+        if (hash.empty()) {
+            calculateHash();
+        }
         return hash;
     }
 
@@ -64,10 +70,15 @@ public:
 };
 
 class HasherMD5 : public AbstractHasher {
-public:
-    std::string getHash() override {
+private:
+    std::string calculateHash() override {
         std::cout << "Hash is calculated" << std::endl;
     };
+public:
+    HasherMD5() = delete;
+
+    using AbstractHasher::AbstractHasher;
+
 
 };
 
