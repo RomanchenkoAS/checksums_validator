@@ -46,7 +46,39 @@ protected:
         std::transform(hash.begin(), hash.end(), hash.begin(), ::toupper);
     }
 
-    virtual void calculateHash() = 0;
+    virtual void initializeDigest(EVP_MD_CTX *digest_context) = 0;
+
+    void calculateHash() {
+        EVP_MD_CTX *digest_context = EVP_MD_CTX_new();
+        if (digest_context == nullptr) {
+            throw std::runtime_error("Failed to create EVP_MD_CTX");
+        }
+//        Initialize digest operation
+        initializeDigest(digest_context);
+
+//        Process chunks of data and update hash_array
+        char buffer[4096];
+        while (file.read(buffer, sizeof(buffer)) || file.gcount()) {
+            if (EVP_DigestUpdate(digest_context, buffer, file.gcount()) != 1) {
+                EVP_MD_CTX_free(digest_context);
+                throw std::runtime_error("Failed to update digest");
+            }
+        }
+
+//        Finish processing hash_array
+        unsigned char hash_array[EVP_MAX_MD_SIZE];
+        unsigned int lengthOfHash = 0;
+        if (EVP_DigestFinal_ex(digest_context, hash_array, &lengthOfHash) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to finalize digest");
+        }
+
+        EVP_MD_CTX_free(digest_context);
+
+//        Turn to string and generate hexadecimal hash_array
+        binary_hash = std::string(reinterpret_cast<const char *>(hash_array), lengthOfHash);
+        toHex();
+    };
 
 public:
     AbstractHasher() = delete;
@@ -72,6 +104,7 @@ public:
     virtual ~AbstractHasher() = default;
 
     void checkHash() {
+//        Make sure hash is already generated
         if (binary_hash.empty()) {
             calculateHash();
         }
@@ -82,7 +115,7 @@ public:
         return hash;
     }
 
-    std::string get_binary_hash() {
+    std::string getBinaryHash() {
         checkHash();
         return binary_hash;
     }
@@ -96,47 +129,26 @@ public:
         std::cout << std::endl;
     }
 
+    void showHash() {
+        std::cout << getHash() << std::endl;
+    }
+
 };
 
 class HasherSHA256 : public AbstractHasher {
 private:
-    void calculateHash() override {
-        EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
-        if (mdctx == nullptr) {
-            throw std::runtime_error("Failed to create EVP_MD_CTX");
-        }
-
-        if (EVP_DigestInit_ex(mdctx, EVP_sha256(), NULL) != 1) {
-            EVP_MD_CTX_free(mdctx);
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_sha256(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
             throw std::runtime_error("Failed to initialize digest context");
         }
+    }
 
-        char buffer[4096];
-        while (file.read(buffer, sizeof(buffer)) || file.gcount()) {
-            if (EVP_DigestUpdate(mdctx, buffer, file.gcount()) != 1) {
-                EVP_MD_CTX_free(mdctx);
-                throw std::runtime_error("Failed to update digest");
-            }
-        }
 
-        unsigned char hash[EVP_MAX_MD_SIZE];
-        unsigned int lengthOfHash = 0;
-        if (EVP_DigestFinal_ex(mdctx, hash, &lengthOfHash) != 1) {
-            EVP_MD_CTX_free(mdctx);
-            throw std::runtime_error("Failed to finalize digest");
-        }
-
-        EVP_MD_CTX_free(mdctx);
-
-        binary_hash = std::string(reinterpret_cast<const char *>(hash), lengthOfHash);
-        toHex();
-    };
 public:
-    HasherSHA256() = delete;
-
     using AbstractHasher::AbstractHasher;
 
-
+    HasherSHA256() = delete;
 };
 
 #endif //CHECKSUMS_HASHER_H
