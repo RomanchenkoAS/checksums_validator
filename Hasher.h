@@ -34,13 +34,12 @@ protected:
         std::stringstream ss;
         for (char byte: binary_hash) {
             /*
-             * static_cast<unsigned char> - transform a signed char to a regular unsigned one
-             * static_cast<int>(...) - transform a byte into an integer 0..255
+             * (int)(unsigned char)(byte) - transform a signed char to unsigned and then into an integer 0..255
              * std::setw(2) - set length of a hex digit to 2 slots
              * std::setfill('0') - fill slots with 0 if empty up to 2 slots
              * std::hex - interpret input as a hexadecimal string
              */
-            ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
+            ss << std::hex << std::setw(2) << std::setfill('0') << (int) (unsigned char) (byte);
         }
         hash = ss.str();
         std::transform(hash.begin(), hash.end(), hash.begin(), ::toupper);
@@ -134,7 +133,7 @@ public:
         std::cout << getHash() << std::endl;
     }
 
-    bool validate(const std::string& input) {
+    bool validate(const std::string &input) {
         checkHash();
         return (hash == input);
     }
