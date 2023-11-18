@@ -3,7 +3,21 @@
 ## Requirements
 - First, make sure you have OpenSSL installed. On Ubuntu, you can install it with:
 ```bash
- sudo apt-get install libssl-dev
+sudo apt-get install libssl-dev
+```
+- To compile the code you need **cmake**, if you don't have it installed, run:
+```bash
+sudo apt-get update
+sudo apt-get install cmake
+```
+- To compile code, create a build directory and run cmake:
+```bash
+mkdir build && cd build
+cmake ..
+```
+- Then compile the code with:
+```bash
+make
 ```
 
 ## Task description
