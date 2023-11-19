@@ -98,16 +98,6 @@ public:
 
 };
 
-class HasherMD4 : public AbstractHasher {
-private:
-    void initializeDigest(EVP_MD_CTX *digest_context) override;
-
-public:
-    using AbstractHasher::AbstractHasher;
-
-    std::string getMethod() override { return "MD4"; }
-
-};
 class HasherMD5 : public AbstractHasher {
 private:
     void initializeDigest(EVP_MD_CTX *digest_context) override;

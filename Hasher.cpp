@@ -137,10 +137,3 @@ void HasherMD5::initializeDigest(EVP_MD_CTX *digest_context) {
         throw std::runtime_error("Failed to initialize digest context");
     }
 }
-
-void HasherMD4::initializeDigest(EVP_MD_CTX *digest_context) {
-    if (EVP_DigestInit_ex(digest_context, EVP_md4(), nullptr) != 1) {
-        EVP_MD_CTX_free(digest_context);
-        throw std::runtime_error("Failed to initialize digest context");
-    }
-}
