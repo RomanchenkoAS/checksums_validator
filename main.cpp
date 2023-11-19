@@ -103,7 +103,7 @@ int main() {
                     break;
                 }
                 case 0: {
-                    break; // Exit option
+                    break;
                 }
                 default: {
                     std::cout << "Invalid choice. Please try again.\n";

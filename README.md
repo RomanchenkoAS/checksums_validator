@@ -10,6 +10,9 @@ sudo apt-get install libssl-dev
 ```bash
 sudo apt-get install cmake
 ```
+
+## Running the code
+
 - To compile code, create a build directory and run cmake:
 ```bash
 mkdir build && cd build
@@ -29,16 +32,16 @@ make
 
 **Functional Requirements:**
 
-- [ ] The tool should support at least two hashing algorithms (e.g., SHA-256, MD5).
-- [ ] Users should be able to select a file and calculate its checksum.
-- [ ]  The tool should allow users to compare the calculated checksum with a provided one for file integrity verification.
-- [ ]  Provide a simple user interface through the command line.
-- [ ]  Implement error handling for missing files or read permissions.
+- [x] The tool should support at least two hashing algorithms (e.g., SHA-256, MD5).
+- [x] Users should be able to select a file and calculate its checksum.
+- [x] The tool should allow users to compare the calculated checksum with a provided one for file integrity verification.
+- [x] Provide a simple user interface through the command line.
+- [x] Implement error handling for missing files or read permissions.
 
 **Performance Criteria:**
 
-- [ ] Hash calculation should be speed optimized, especially for large files.
-- [ ] The tool should ensure accurate hash values to avoid false negatives during verification.
+- [x] Hash calculation should be speed optimized, especially for large files.
+- [x] The tool should ensure accurate hash values to avoid false negatives during verification.
 
 ## Проверка контрольных сумм файла
 
@@ -46,13 +49,13 @@ make
 
 **Функциональные требования:**
 
-- [ ]  Инструмент должен поддерживать как минимум два алгоритма хеширования (например, SHA-256, MD5).
-- [ ]  Пользователи должны иметь возможность выбрать файл и вычислить его контрольную сумму.
-- [ ]  Инструмент должен позволять пользователям сравнивать вычисленную контрольную сумму с предоставленной для проверки целостности файла.
-- [ ]  Предоставить простой пользовательский интерфейс через командную строку.
-- [ ]  Реализовать обработку ошибок для отсутствующих файлов или прав на чтение.
+- [x] Инструмент должен поддерживать как минимум два алгоритма хеширования (например, SHA-256, MD5).
+- [x] Пользователи должны иметь возможность выбрать файл и вычислить его контрольную сумму.
+- [x] Инструмент должен позволять пользователям сравнивать вычисленную контрольную сумму с предоставленной для проверки целостности файла.
+- [x] Предоставить простой пользовательский интерфейс через командную строку.
+- [x] Реализовать обработку ошибок для отсутствующих файлов или прав на чтение.
 
 **Критерии производительности:**
 
-- [ ]  Вычисление хеша должно быть оптимизировано по скорости, особенно для больших файлов.
-- [ ]  Инструмент должен обеспечивать точные значения хеша, чтобы избежать ложных отрицательных результатов при проверке.
+- [x] Вычисление хеша должно быть оптимизировано по скорости, особенно для больших файлов.
+- [x] Инструмент должен обеспечивать точные значения хеша, чтобы избежать ложных отрицательных результатов при проверке.
