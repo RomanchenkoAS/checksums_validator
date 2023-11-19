@@ -3,8 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include <openssl/md5.h>
-#include <openssl/sha.h>
 #include <openssl/evp.h>
 
 #include <iomanip> // for input/output manipulation (toHex)
@@ -81,8 +79,6 @@ protected:
     };
 
 public:
-    AbstractHasher() = delete;
-
     explicit AbstractHasher(std::string filename) : filename(std::move(filename)),
                                                     file(this->filename, std::ios::binary) {
         if (!file) {
@@ -140,6 +136,19 @@ public:
 
 };
 
+class HasherSHA1 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_sha1(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to initialize digest context");
+        }
+    }
+
+public:
+    using AbstractHasher::AbstractHasher;
+};
+
 class HasherSHA256 : public AbstractHasher {
 private:
     void initializeDigest(EVP_MD_CTX *digest_context) override {
@@ -149,11 +158,34 @@ private:
         }
     }
 
+public:
+    using AbstractHasher::AbstractHasher;
+};
+
+class HasherSHA3_256 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_sha3_256(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to initialize digest context");
+        }
+    }
 
 public:
     using AbstractHasher::AbstractHasher;
+};
 
-    HasherSHA256() = delete;
+class HasherSHA3_512 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_sha3_512(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to initialize digest context");
+        }
+    }
+
+public:
+    using AbstractHasher::AbstractHasher;
 };
 
 class HasherMD5 : public AbstractHasher {
@@ -165,12 +197,22 @@ private:
         }
     }
 
+public:
+    using AbstractHasher::AbstractHasher;
+};
+
+
+class HasherMD4 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override {
+        if (EVP_DigestInit_ex(digest_context, EVP_md4(), nullptr) != 1) {
+            EVP_MD_CTX_free(digest_context);
+            throw std::runtime_error("Failed to initialize digest context");
+        }
+    }
 
 public:
     using AbstractHasher::AbstractHasher;
-
-    HasherMD5() = delete;
 };
-
 
 #endif //CHECKSUMS_HASHER_H
