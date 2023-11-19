@@ -96,7 +96,10 @@ void AbstractHasher::showHash() {
 
 bool AbstractHasher::validate(const std::string &input) {
     checkHash();
-    return (hash == input);
+//    Uppercase input string
+    std::string compare_string = input;
+    std::transform(compare_string.begin(), compare_string.end(), compare_string.begin(), ::toupper);
+    return (hash == compare_string);
 }
 
 void HasherSHA1::initializeDigest(EVP_MD_CTX *digest_context) {

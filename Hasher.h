@@ -54,6 +54,8 @@ public:
 
     bool validate(const std::string &input);
 
+    virtual std::string getMethod() = 0;
+
 };
 
 class HasherSHA1 : public AbstractHasher {
@@ -62,6 +64,8 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
+    std::string getMethod() override { return "SHA1"; }
 };
 
 class HasherSHA256 : public AbstractHasher {
@@ -70,6 +74,8 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+    std::string getMethod() override { return "SHA256"; }
+
 };
 
 class HasherSHA3_256 : public AbstractHasher {
@@ -78,6 +84,8 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+    std::string getMethod() override { return "SHA3_256"; }
+
 };
 
 class HasherSHA3_512 : public AbstractHasher {
@@ -86,16 +94,9 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+    std::string getMethod() override { return "SHA3_512"; }
+
 };
-
-class HasherMD5 : public AbstractHasher {
-private:
-    void initializeDigest(EVP_MD_CTX *digest_context) override;
-
-public:
-    using AbstractHasher::AbstractHasher;
-};
-
 
 class HasherMD4 : public AbstractHasher {
 private:
@@ -103,6 +104,20 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
+    std::string getMethod() override { return "MD4"; }
+
 };
+class HasherMD5 : public AbstractHasher {
+private:
+    void initializeDigest(EVP_MD_CTX *digest_context) override;
+
+public:
+    using AbstractHasher::AbstractHasher;
+    std::string getMethod() override { return "MD5"; }
+
+};
+
+
 
 #endif //CHECKSUMS_HASHER_H
