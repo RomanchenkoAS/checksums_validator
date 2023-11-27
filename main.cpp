@@ -4,6 +4,7 @@
 #include "Hasher.h"
 
 std::string getFilename() {
+//    Display current directory and receive filename from user
     char path[PATH_MAX];
     if (getcwd(path, sizeof(path)) != nullptr) {
         std::cout << "Current directory: " << path << std::endl;
@@ -61,7 +62,7 @@ void displayHashOptions(AbstractHasher &hasher) {
 
 int main() {
     int choice;
-    do {
+    for (;;) {
         std::cout << "\n-- Main menu --\n";
         std::cout << "Select an option:\n";
         std::cout << "1. SHA1\n";
@@ -73,48 +74,46 @@ int main() {
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
-        std::string filename = getFilename();
+        if (choice) {
+            std::string filename = getFilename();
 
-        try {
-            switch (choice) {
-                case 1: {
-                    HasherSHA1 hasher(filename);
-                    displayHashOptions(hasher);
-                    break;
-                }
-                case 2: {
-                    HasherSHA256 hasher(filename);
-                    displayHashOptions(hasher);
-                    break;
-                }
-                case 3: {
-                    HasherSHA3_256 hasher(filename);
-                    displayHashOptions(hasher);
-                    break;
-                }
-                case 4: {
-                    HasherSHA3_512 hasher(filename);
-                    displayHashOptions(hasher);
-                    break;
-                }
-                case 5: {
-                    HasherMD5 hasher(filename);
-                    displayHashOptions(hasher);
-                    break;
-                }
-                case 0: {
-                    break;
-                }
-                default: {
-                    std::cout << "Invalid choice. Please try again.\n";
+            try {
+                switch (choice) {
+                    case 1: {
+                        HasherSHA1 hasher(filename);
+                        displayHashOptions(hasher);
+                        break;
+                    }
+                    case 2: {
+                        HasherSHA256 hasher(filename);
+                        displayHashOptions(hasher);
+                        break;
+                    }
+                    case 3: {
+                        HasherSHA3_256 hasher(filename);
+                        displayHashOptions(hasher);
+                        break;
+                    }
+                    case 4: {
+                        HasherSHA3_512 hasher(filename);
+                        displayHashOptions(hasher);
+                        break;
+                    }
+                    case 5: {
+                        HasherMD5 hasher(filename);
+                        displayHashOptions(hasher);
+                        break;
+                    }
+                    default: {
+                        std::cout << "Invalid choice. Please try again.\n";
 
+                    }
                 }
+            } catch (const std::runtime_error &e) {
+                std::cerr << "Error: " << e.what() << std::endl;
             }
-        } catch (const std::runtime_error &e) {
-            std::cerr << "Error: " << e.what() << std::endl;
+        } else {
+            return 0;
         }
-
-    } while (choice != 0);
-
-    return 0;
+    }
 }
