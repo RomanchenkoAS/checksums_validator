@@ -1,11 +1,8 @@
-#include "Hasher.h"
-
-// Functions implementation go here
 #include <algorithm> // for std::transform()
 #include <fstream>
 #include <iomanip> // for input/output manipulation (toHex)
-
 #include <bitset> // for debugging
+#include "Hasher.h"
 
 void AbstractHasher::toHex() {
     // Transform binary hash string into hexadecimal

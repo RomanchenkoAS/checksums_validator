@@ -1,12 +1,10 @@
-#ifndef CHECKSUMS_HASHER_H
-#define CHECKSUMS_HASHER_H
+#pragma once
 
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <openssl/evp.h>
 #include <utility> // for std::move()
-
 
 class AbstractHasher {
 protected:
@@ -74,6 +72,7 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
     std::string getMethod() override { return "SHA256"; }
 
 };
@@ -84,6 +83,7 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
     std::string getMethod() override { return "SHA3_256"; }
 
 };
@@ -94,6 +94,7 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
     std::string getMethod() override { return "SHA3_512"; }
 
 };
@@ -104,10 +105,7 @@ private:
 
 public:
     using AbstractHasher::AbstractHasher;
+
     std::string getMethod() override { return "MD5"; }
 
 };
-
-
-
-#endif //CHECKSUMS_HASHER_H
