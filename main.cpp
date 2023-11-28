@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h> // for getcwd()
-#include <limits.h> // for PATH_MAX
+#include <climits> // for PATH_MAX
 #include "Hasher.h"
 
 std::string getFilename() {
@@ -14,7 +14,7 @@ std::string getFilename() {
     }
 
     std::string filename;
-    std::cout << "Enter the filename: ";
+    std::cout << "Enter path to file (absolute or relative): ";
     std::cin >> filename;
     return filename;
 }
@@ -33,10 +33,12 @@ void displayHashOptions(AbstractHasher &hasher) {
         switch (choice) {
             case 1: {
                 hasher.showHash();
+                hasher.displaySpeed();
                 break;
             }
             case 2: {
                 hasher.showBinaryHash();
+                hasher.displaySpeed();
                 break;
             }
             case 3: {
@@ -110,7 +112,7 @@ int main() {
                     }
                 }
             } catch (const std::runtime_error &e) {
-                std::cerr << "Error: " << e.what() << std::endl;
+                std::cout << "Error: " << e.what() << std::endl;
             }
         } else {
             return 0;

@@ -2,30 +2,30 @@
 
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <openssl/evp.h>
-#include <utility> // for std::move()
 
 class AbstractHasher {
 protected:
-    std::string binary_hash;
+    std::string binaryHash;
     std::string hash;
     std::string filename;
     std::ifstream file;
+    float fileSize, hashingSpeed;
 
     void toHex();
+
+    float getFileSize();
 
     virtual void initializeDigest(EVP_MD_CTX *digest_context) = 0;
 
     void calculateHash();
 
 public:
-    explicit AbstractHasher(std::string filename) : filename(std::move(filename)),
-                                                    file(this->filename, std::ios::binary) {
-        if (!file) {
-            throw std::runtime_error("Cannot open file");
-        }
-    };
+    void calculateSpeed(float duration);
+
+    void displaySpeed() const;
+
+    explicit AbstractHasher(std::string filename);
 
 //    Forbid copy
     AbstractHasher(const AbstractHasher &) = delete;
@@ -37,8 +37,7 @@ public:
 
     AbstractHasher &operator=(AbstractHasher &&) = delete;
 
-
-    virtual ~AbstractHasher() = default;
+    ~AbstractHasher() { file.close(); };
 
     void checkHash();
 
