@@ -45,6 +45,7 @@ float AbstractHasher::getFileSize() {
         throw std::runtime_error("Could not open file: " + filename);
     }
     std::streampos fileSizeInBytes = tempFile.tellg();
+    tempFile.close();
     return fileSizeInBytes / std::pow(1024, 2); // in MB
 }
 
@@ -108,6 +109,7 @@ void AbstractHasher::checkHash() {
         auto startTimeMS = std::chrono::high_resolution_clock::now();
 
         calculateHash();
+        file.close();
 
         auto endTimeMS = std::chrono::high_resolution_clock::now();
         auto executionTimeMS = std::chrono::duration_cast<std::chrono::milliseconds>(endTimeMS - startTimeMS).count();

@@ -37,7 +37,7 @@ public:
 
     AbstractHasher &operator=(AbstractHasher &&) = delete;
 
-    ~AbstractHasher() { file.close(); };
+    ~AbstractHasher() = default;
 
     void checkHash();
 
