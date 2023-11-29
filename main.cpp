@@ -77,38 +77,45 @@ int main() {
         std::cin >> choice;
 
         if (choice) {
-            std::string filename = getFilename();
-
+            std::string filename;
             try {
                 switch (choice) {
                     case 1: {
+                        filename = getFilename();
                         HasherSHA1 hasher(filename);
                         displayHashOptions(hasher);
                         break;
                     }
                     case 2: {
+                        filename = getFilename();
                         HasherSHA256 hasher(filename);
                         displayHashOptions(hasher);
                         break;
                     }
                     case 3: {
+                        filename = getFilename();
                         HasherSHA3_256 hasher(filename);
                         displayHashOptions(hasher);
                         break;
                     }
                     case 4: {
+                        filename = getFilename();
                         HasherSHA3_512 hasher(filename);
                         displayHashOptions(hasher);
                         break;
                     }
                     case 5: {
+                        filename = getFilename();
                         HasherMD5 hasher(filename);
                         displayHashOptions(hasher);
                         break;
                     }
+                    case 0: {
+                        return 0;
+                    }
                     default: {
                         std::cout << "Invalid choice. Please try again.\n";
-
+                        break;
                     }
                 }
             } catch (const std::runtime_error &e) {
