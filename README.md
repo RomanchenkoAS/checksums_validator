@@ -17,9 +17,17 @@ sudo apt-get install cmake
 
 ## Запуск программы
 
-- Для того что бы скомпилировать код, создайте директорию **build** и выполните команду **cmake**:
+- Для начала, клонируем репозиторию:
 
 ```bash
+git clone https://github.com/RomanchenkoAS/checksums_validator.git 
+```
+
+- Что бы скомпилировать код, создайте директорию **build** внутри скачанной директории **passwords** и выполните команду
+  **cmake**:
+
+```bash
+cd passwords
 mkdir build && cd build
 cmake ..
 ```
